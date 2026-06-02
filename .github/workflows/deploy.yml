@@ -24,6 +24,8 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          # 以下を追記してください
+          auth-type: OIDC
 
       # 3. ストレージアカウント（$webコンテナー）へファイルをアップロード
       - name: Upload to Azure Storage
