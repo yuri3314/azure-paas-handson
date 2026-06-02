@@ -1,0 +1,40 @@
+name: Deploy Portfolio to Azure Storage
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. GitHubからソースコードをチェックアウト
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. AzureへOIDC認証でログイン
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      # 3. ストレージアカウント（$webコンテナー）へファイルをアップロード
+      - name: Upload to Azure Storage
+        uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            az storage blob upload-batch --account-name wpaasstorage1122 --auth-mode login -d '$web' -s . --overwrite true
+
+      # 4. Front Doorのキャッシュをクリア（パージ）して最新状態を即時反映！
+      - name: Purge Front Door Cache
+        uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            az afd endpoint purge --content-paths "/*" --profile-name afd-portfolio-pro --resource-group pass-rg --endpoint-name yuri-profile
