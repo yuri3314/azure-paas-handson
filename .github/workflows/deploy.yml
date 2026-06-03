@@ -29,8 +29,8 @@ jobs:
       # 3. ストレージアカウント（$webコンテナー）へファイルをアップロード
       - name: Upload to Azure Storage
         uses: azure/CLI@v2
-        azcliversion: latest
         with:
+          azcliversion: latest
           inlineScript: |
             az storage blob upload-batch --account-name wpaasstorage1122 --auth-mode login -d '$web' -s . --overwrite true
 
