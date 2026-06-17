@@ -20,3 +20,36 @@
 
 ３．パフォーマンス: CDN利用による高速なレスポンス。
 
+# My Portfolio Site
+[https://yuri-profile-gwd0gyh9htc7gadg.z03.azurefd.net/](https://yuri-profile-gwd0gyh9htc7gadg.z03.azurefd.net/)
+
+## 概要
+Azureの静的ホスティング機能を活用したポートフォリオサイトです。
+インフラ設計から自動デプロイまでを、現役エンジニアのベストプラクティスを意識して構築しました。
+
+## 技術スタック
+- Azure Storage ($web)
+- Azure Front Door (CDN)
+- GitHub Actions (CI/CD)
+- OIDC認証によるセキュアなデプロイ
+
+## こだわりポイント
+- **自動デプロイ**: GitHub ActionsとOIDC認証を用い、手動作業を一切排除。
+- **堅牢な配信**: Front DoorによるCDN構成でHTTPS配信と高速化を実現。
+
+工夫した点
+・セキュアな認証の実現: 認証情報（シークレット）を直接 GitHub に保存せず、OIDC（OpenID Connect）認証を採用したことで、セキュリティレベルを向上させました。
+・CI/CD による自動化: GitHub Repository へのプッシュをトリガーに、ビルドから Azure Storage へのデプロイまでを完全に自動化し、人的ミスを排除するとともに開発効率を最大化しました。
+・最初はAzure Static Web Appsを検討しましたが、インフラの深い理解を目指し、あえてAzure StorageとFront Doorを分離する構成を選択しました。その結果、構成の自由度と堅牢性を学べました。
+
+苦労した点
+・OIDC認証の実装：AzureとGitHub Actions間のフェデレーション設定において、適切な権限付与に苦戦しました。公式ドキュメントを参照しながらサービスプリンシパルの権限を一つずつ精査し、最小権限の原則に基づいて正しくデプロイできる状態へと最適化しました。
+・CDN キャッシュの制御: Azure Front Door 経由でサイトを配信する際、新しいコンテンツをデプロイした後に、CDN のキャッシュを適切にパージ（削除）して最新版が即座に反映されるようにする仕組みの調整に苦労しました。
+
+
+
+
+
+
+
+
